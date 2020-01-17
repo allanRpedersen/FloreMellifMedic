@@ -1,0 +1,150 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Benvinguda a tothom{% endblock %}
+
+{% block body %}
+<div class="container">
+
+	<div class="jumbotron mt-3">
+		<h1 class="display-3">Flore Mellifère</h1>
+		<p class="lead">Nous nous proposons de référencer la flore avec laquelle les insectes pollinisateurs entretiennent des relations</p>
+		<hr class="my-4">
+		<p>L'origine de cet index est issue des travaux de M. <a href="https://fr.wikipedia.org/wiki/Gaston_Bonnier">Gaston Bonnier</a> et enrichi au fil du temps.</p>
+		<p class="lead">
+			<a class="btn btn-primary btn-lg" href="#" role="button">Voir l'index</a>
+		</p>	
+	</div>
+
+	<h2 class="h1 mt-3 mb-4">Les fiches les plus consultées</h2>
+
+	<div class="row">
+		<div class="col-md-4">
+			<div class="card bg-light mb-3">
+				<div class="card-header text-center">
+					Nom vernaculaire <br>
+					<em>Nom binomial</em>
+				</div>
+				<img src="http://placehold.it/300x300" alt="Fleur mellifère" style="height:300px; width:100%; display: block;">
+
+				<div class="card-body">
+					<h4 class="card-title">
+						Description de la plante
+					</h4>
+					<p class="card-text">Lorem ipsum dolor sit amet consectetur adipisicing elit. Blanditiis natus, quod totam et earum libero culpa a molestiae perspiciatis ut.</p>
+					<a href="#" class="btn btn-secondary">En savoir plus</a>
+				</div>
+			</div>
+		</div>
+
+		<div class="col-md-4">
+			<div class="card bg-light mb-3">
+				<div class="card-header text-center">
+					Nom vernaculaire<br>
+					<em>Nom binomial</em>
+				</div>
+				<img src="http://placehold.it/300x300" alt="Fleur mellifère" style="height:300px; width:100%; display: block;">
+
+				<div class="card-body">
+					<h4 class="card-title">
+						Description de la plante
+					</h4>
+					<p class="card-text">Lorem ipsum dolor sit amet consectetur adipisicing elit. Blanditiis natus, quod totam et earum libero culpa a molestiae perspiciatis ut.</p>
+					<a href="#" class="btn btn-secondary">En savoir plus</a>
+				</div>
+			</div>
+		</div>
+
+		<div class="col-md-4">
+			<div class="card bg-light mb-3">
+				<div class="card-header text-center">
+					Nom vernaculaire <br>
+					<em>Nom binomial</em>
+				</div>
+				<img src="http://placehold.it/300x300" alt="Fleur mellifère" style="height:300px; width:100%; display: block;">
+
+				<div class="card-body">
+					<h4 class="card-title">
+						Description de la plante
+					</h4>
+					<p class="card-text">Lorem ipsum dolor sit amet consectetur adipisicing elit. Blanditiis natus, quod totam et earum libero culpa a molestiae perspiciatis ut.</p>
+					<a href="#" class="btn btn-secondary">En savoir plus</a>
+				</div>
+			</div>
+		</div>
+
+	</div>
+
+	<h2 class="h1 mt-3 mb-4">Les floraisons du mois</<h2>
+
+	<h2 class="h1 mt-3 mb-4">Les pollinisateurs</h2>
+
+		<div class="row">
+			<div class="col-md-3">
+				<div class="card border-secondary mb-3">
+					<div class="body">
+						<h4 class="card-title">Nom vernaculaire</h4>
+						<hr>
+						<div class="card-text">
+							<img src="http://placehold.it/64x64" alt="Image insecte pollinisateur" class="float-left mr-3">
+							<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Facilis, molestiae!</p>
+							<a href="#" class="btn btn-success float-right">Plus d'infos</a>
+						</div>
+					</div>
+				</div>			
+			</div>
+			<div class="col-md-3">
+				<div class="card border-secondary mb-3">
+					<div class="body">
+						<h4 class="card-title">Nom vernaculaire</h4>
+						<hr>
+						<div class="card-text">
+							<img src="http://placehold.it/64x64" alt="Image insecte pollinisateur" class="float-left mr-3">
+							<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Facilis, molestiae!</p>
+							<a href="#" class="btn btn-success float-right">Plus d'infos</a>
+						</div>
+					</div>
+				</div>			
+			</div>
+			<div class="col-md-3">
+				<div class="card border-secondary mb-3">
+					<div class="body">
+						<h4 class="card-title">Nom vernaculaire</h4>
+						<hr>
+						<div class="card-text">
+							<img src="http://placehold.it/64x64" alt="Image insecte pollinisateur" class="float-left mr-3">
+							<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Facilis, molestiae!</p>
+							<a href="#" class="btn btn-success float-right">Plus d'infos</a>
+						</div>
+					</div>
+				</div>			
+			</div>
+			<div class="col-md-3">
+				<div class="card border-secondary mb-3">
+					<div class="body">
+						<h4 class="card-title">Nom vernaculaire</h4>
+						<hr>
+						<div class="card-text">
+							<img src="http://placehold.it/64x64" alt="Image insecte pollinisateur" class="float-left mr-3">
+							<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Facilis, molestiae!</p>
+							<a href="#" class="btn btn-success float-right">Plus d'infos</a>
+						</div>
+					</div>
+				</div>			
+			</div>
+		</div>
+
+</div>
+
+{# <div class="container">
+{% for specy, food in species %}
+	{% if loop.first %}
+		<strong>hello : {{ specy }}, you eat {{ food }}</strong>
+	{% elseif loop.last %}
+		<em>hello : {{ specy }}, you eat {{ food }}</em>
+	{% else %}
+		<p>hello : {{ specy }}, you eat {{ food }}</p>
+	{% endif %}
+{% endfor %}
+</div> #}
+
+{% endblock %}
