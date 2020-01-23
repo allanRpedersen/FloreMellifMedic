@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Création d'une entrée{% endblock %}
+
+{% block body %}
+	<div class="container">
+		<h1>Créer une nouvelle entrée</h1>
+
+		{# {{ form_start(form) }}
+		{{ form_widget(form) }}
+		<button class="btn btn-primary">Ajouter cette nouvelle entrée</button>
+		{{ form_end(form) }} #}
+
+		{{ form(form) }}
+
+	</div>
+{% endblock %}

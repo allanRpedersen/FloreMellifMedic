@@ -1,4 +1,12 @@
+//
 // using template https://bootswatch.com/sketchy/
 @import 'variables';
 @import 'bootstrap.min.css';
 @import 'bootswatch';
+
+// 
+// Flore Mellifère et Médicinale
+
+div.carousel-caption {
+	text-shadow: 3px 3px 3px rgba(0,0,0,0.5);
+}

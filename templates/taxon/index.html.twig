@@ -1,0 +1,34 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}La liste des taxons référencés{% endblock %}
+
+{% block body %}
+<div class="container">
+	<h1 class="my-3">Liste des taxons référencés</h1>
+	<div class="row">
+		{% for taxon in taxons %}
+		{% set url = path('taxons_show', {'slug': taxon.slug}) %}
+		<div class="col-md-4">
+			<div class="card bg-light mb-3">
+				<div class="card-header text-center">
+					{{taxon.commonName}} <br>
+					<em>{{taxon.genericName}} {{taxon.specificName}}</em>
+				</div>
+				<a href="{{ url }}">
+					<img src="{{taxon.coverImage}}" alt="Flore mellifère" style="width: 100%; display: block;">
+				</a>
+
+				<div class="card-body">
+					<h3 class="card-title">
+						{{taxon.introduction}}
+					</h3>
+					{# <p class="card-text">{{taxon.description | raw}}</p> #}
+					<a href="{{ url }}" class="btn btn-secondary">En savoir plus</a>
+				</div>
+			</div>
+		</div>
+		{% endfor %}
+	</div>
+
+</div>
+{% endblock %}
