@@ -16,41 +16,48 @@ class TaxonType extends AbstractType
 {
 
 	/**
-	 * Crée un configuration de base pour les champs du formaulaire
+	 * Crée un configuration de base pour les champs du formulaire
 	 *
 	 * @param string $label
 	 * @param string $placeholder
 	 * @return array
 	 */
-	private function mkBasics( $label, $placeholder )
+	private function mkBasics( $label, $placeholder, $options=[] )
 	{
-		return [
+		return array_merge([
 			'label' => $label,
 			'attr' => [
 				'placeholder'=> $placeholder
 			]
-		];
+		], $options);
 	}
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-		->add('commonName', TextType::class, $this->mkBasics("nom normalisé", "nom commun") )
+			->add('commonName', TextType::class, $this->mkBasics("nom normalisé", "nom commun") )
             ->add('genericName', TextType::class, $this->mkBasics("nom générique", "genre") )
             ->add('specificName', TextType::class, $this->mkBasics("nom spécifique", "espèce") )
             ->add('family', TextType::class, $this->mkBasics("famille", "famille") )
             ->add('coverImage', UrlType::class, $this->mkBasics("image principale", "url de l'image") )
             ->add('introduction', TextType::class, $this->mkBasics("introduction", "présentation du taxon") )
             ->add('description', TextareaType::class, $this->mkBasics("description", "la description compléte du taxon"))
-            ->add('flowering', TextType::class, $this->mkBasics("floraison", "jfmamjjasond") )
+			->add('flowering', TextType::class, [// $this->mkBasics("floraison", "jfmamjjasond"))
+				'label' => 'floraison',
+				'attr' => [
+					'placeholder' => 'jfmamjjasond',
+					'required' => 'false'
+				]
+			])
             ->add('usedTo', TextType::class, $this->mkBasics("utilisation", "utilisation") )
             ->add('toxicity', IntegerType::class )
-			->add('save', SubmitType::class, [
-				'label' => 'Ajouter cette entrée à l\' index',
-				'attr' => [
-					'class' => 'btn btn-primary'
-				]
-			]);
+			// ->add('save', SubmitType::class, [
+			// 	'label' => 'Ajouter cette entrée à l\' index',
+			// 	'attr' => [
+			// 		'class' => 'btn btn-primary'
+			// 	]
+			// ])
+			;
     }
 
     public function configureOptions(OptionsResolver $resolver)

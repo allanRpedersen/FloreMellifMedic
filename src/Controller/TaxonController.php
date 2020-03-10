@@ -6,17 +6,20 @@ use App\Entity\Taxon;
 use App\Form\TaxonType;
 use App\Repository\TaxonRepository;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Doctrine\Common\Persistence\ObjectManager;
 // use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
+/**
+ * @Route("/taxon")
+ */
 class TaxonController extends AbstractController
 {
     /**
-     * @Route("/taxons", name="taxons_index")
+     * @Route("/", name="taxon_index", methods={"GET"})
      */
     public function index(TaxonRepository $repo )
     {
@@ -33,13 +36,13 @@ class TaxonController extends AbstractController
 	/**
 	 * Permet la création d'une entrée dans l'index
 	 * 
-	 * @Route( "/taxons/create", name="taxons_create" )
+	 * @Route( "/new", name="taxon_new" )
 	 *
 	 * @param Request $request
 	 * 
 	 * @return Response
 	 */
-	public function create( Request $request /*, ObjectManager $manager */)
+	public function new( Request $request /*, ObjectManager $manager */) : Response
 	{
 		$taxon = new Taxon;
 
@@ -71,12 +74,12 @@ class TaxonController extends AbstractController
 			$manager->persist($taxon);
 			$manager->flush();
 
-			return $this->redirectToRoute( 'taxons_show', [
+			return $this->redirectToRoute( 'taxon_show', [
 				'slug' => $taxon->getSlug()
 			] );
 		}
 
-		return $this->render( 'taxon/create.html.twig', [
+		return $this->render( 'taxon/new.html.twig', [
 			'form' => $form->createView()
 		] );
 	}
@@ -85,7 +88,7 @@ class TaxonController extends AbstractController
 	/**
 	 * Permet l'affichage d'une fiche de l'index
 	 * 
-	 * @Route( "/taxons/{slug}", name="taxons_show" )
+	 * @Route( "/{slug}", name="taxon_show" )
 	 *
 	 * @return Response
 	 */
@@ -101,5 +104,39 @@ class TaxonController extends AbstractController
 		]);
 
 	}
+
+    /**
+     * @Route("/{slug}/edit", name="taxon_edit", methods={"GET","POST"})
+     */
+    public function edit(Request $request, Taxon $taxon): Response
+    {
+        $form = $this->createForm(TaxonType::class, $taxon);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $this->getDoctrine()->getManager()->flush();
+
+            return $this->redirectToRoute('taxon_index');
+        }
+
+        return $this->render('taxon/edit.html.twig', [
+            'taxon' => $taxon,
+            'form' => $form->createView(),
+        ]);
+    }
+
+    /**
+     * @Route("/{slug}", name="taxon_delete", methods={"DELETE"})
+     */
+    public function delete(Request $request, Taxon $taxon): Response
+    {
+        if ($this->isCsrfTokenValid('delete'.$taxon->getId(), $request->request->get('_token'))) {
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->remove($taxon);
+            $entityManager->flush();
+        }
+
+        return $this->redirectToRoute('taxon_index');
+    }
 
 }

@@ -7,7 +7,7 @@
 	<h1 class="my-3">Liste des taxons référencés</h1>
 	<div class="row">
 		{% for taxon in taxons %}
-		{% set url = path('taxons_show', {'slug': taxon.slug}) %}
+		{% set url = path('taxon_show', {'slug': taxon.slug}) %}
 		<div class="col-md-4">
 			<div class="card bg-light mb-3">
 				<div class="card-header text-center">

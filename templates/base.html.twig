@@ -2,6 +2,10 @@
 <html>
     <head>
         <meta charset="UTF-8">
+
+		<link rel="icon" type="image/png" href="/bee.png" />
+		<!-- <link rel="shortcut icon" type="image/x-icon" href="vignettes/bee.ico" /> -->
+
         <title>FloreMM - {% block title %}Benvinguts{% endblock %}</title>
         {% block stylesheets %}{{ encore_entry_link_tags('app') }}{% endblock %}
     </head>
@@ -19,7 +23,7 @@
 						<a class="nav-link" href="{{ path('frontpage') }}">Accueil<span class="sr-only">(current)</span></a>
 					</li>
 					<li class="nav-item">
-						<a class="nav-link" href="{{ path('taxons_index') }}">Index</a>
+						<a class="nav-link" href="{{ path('taxon_index') }}">Index</a>
 					</li>
 				</ul>
 				<form class="form-inline my-2 my-lg-0">

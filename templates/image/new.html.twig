@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Nouvelle image{% endblock %}
+
+{% block body %}
+    <h1>Ajour d'une nouvelle image</h1>
+
+    {{ include('image/_form.html.twig') }}
+
+    <a href="{{ path('image_index') }}">retour à la liste</a>
+{% endblock %}

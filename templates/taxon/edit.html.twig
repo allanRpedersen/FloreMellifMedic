@@ -1,0 +1,15 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Modification de l'entrée{% endblock %}
+
+{% block body %}
+<div class="container">
+    <h1>Modification de l'entrée</h1>
+
+    {{ include('taxon/_form.html.twig', {'button_label': 'Mettre à jour'}) }}
+
+    <a href="{{ path('taxon_index') }}">retour à la liste</a>
+
+    {{ include('taxon/_delete_form.html.twig') }}
+</div>
+{% endblock %}
