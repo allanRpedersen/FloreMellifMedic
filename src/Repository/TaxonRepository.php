@@ -19,22 +19,62 @@ class TaxonRepository extends ServiceEntityRepository
         parent::__construct($registry, Taxon::class);
     }
 
-    // /**
-    //  * @return Taxon[] Returns an array of Taxon objects
-    //  */
-    /*
-    public function findByExampleField($value)
+    /**
+	 * 
+	 * 
+	 * findByCommonName
+	 * 
+	 * @param string $orderBy
+     * @return Taxon[] Returns an array of Taxon objects
+     */
+    public function findByCommonName($orderBy='ASC')
     {
         return $this->createQueryBuilder('t')
-            ->andWhere('t.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('t.id', 'ASC')
-            ->setMaxResults(10)
+            //->andWhere('t.commonName = :val')
+            //->setParameter('val', $value)
+            ->orderBy('t.commonName', $orderBy)
+            //->setMaxResults(10)
             ->getQuery()
             ->getResult()
         ;
     }
-    */
+
+    /**
+	 * 
+	 * findByGenericName
+	 *  
+	 * @param string $orderBy
+     * @return Taxon[] Returns an array of Taxon objects
+     */
+    public function findByGenericName($orderBy='ASC')
+    {
+        return $this->createQueryBuilder('t')
+            //->andWhere('t.genericName = :val')
+            //->setParameter('val', $value)
+            ->orderBy('t.genericName', $orderBy)
+            //->setMaxResults(10)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
+    /**
+	 * findBySpecificName
+	 *  
+	 * @param string $orderBy
+     * @return Taxon[] Returns an array of Taxon objects
+     */
+    public function findBySpecificName($orderBy='ASC')
+    {
+        return $this->createQueryBuilder('t')
+            //->andWhere('t.specificName = :val')
+            //->setParameter('val', $value)
+            ->orderBy('t.specificName', $orderBy)
+            //->setMaxResults(10)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
 
     /*
     public function findOneBySomeField($value): ?Taxon

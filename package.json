@@ -15,7 +15,7 @@
         "watch": "encore dev --watch",
         "build": "encore production --progress"
     },
-    "name": "FloreMellifMedic",
+    "name": "@flore-mellif-medic/webcoop",
     "version": "1.0.0",
     "description": "Flore Mellifère et Médicinale",
     "main": "index.js",

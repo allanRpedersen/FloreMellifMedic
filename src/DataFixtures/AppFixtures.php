@@ -15,6 +15,8 @@ class AppFixtures extends Fixture
 		$faker = Factory::create('fr-FR');
 
 		
+
+		
 		for ( $i=1; $i<=11; $i++){
 
 			$taxon = new Taxon();

@@ -5,11 +5,21 @@ namespace App\Entity;
 use Cocur\Slugify\Slugify;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\Collection;
+use Symfony\Component\HttpFoundation\File\File;
 use Doctrine\Common\Collections\ArrayCollection;
+use Vich\UploaderBundle\Mapping\Annotation as Vich;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\TaxonRepository")
  * @ORM\HasLifecycleCallbacks
+ * @Vich\Uploadable
+ * @UniqueEntity(
+ * 	fields={"genericName","specificName"},
+ * 	message="Ce taxon existe déjà !"
+ * )
  */
 class Taxon
 {
@@ -52,18 +62,47 @@ class Taxon
 
     /**
      * @ORM\Column(type="text")
+	 * @Assert\Length(
+	 * 				min=5, 
+	 * 				max=255, 
+	 * 				minMessage="l'introduction doit faire plus de 5 caractères !", 
+	 * 				maxMessage="ne peut pas faire plus de 255 caractères !")
      */
     private $introduction;
 
     /**
-     * @ORM\Column(type="text")
+     * @ORM\Column(type="text", nullable=true)
      */
     private $description;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+	 * @Assert\Url()
      */
-    private $coverImage;
+	private $coverImageName;
+	
+	/**
+     * NOTE: This is not a mapped field of entity metadata, just a simple property.
+     * 
+     * @Vich\UploadableField(mapping="taxon_image", fileNameProperty="coverImageName", size="coverImageSize")
+     * 
+     * @var File|null
+     */
+	private $coverImageFile;
+
+	/**
+     * @ORM\Column(type="integer")
+     *
+     * @var int|null
+     */
+    private $coverImageSize;
+
+    /**
+     * @ORM\Column(type="datetime")
+     *
+     * @var \DateTimeInterface|null
+     */
+    private $updatedAt;
 
     /**
      * @ORM\Column(type="integer", nullable=true)
@@ -72,6 +111,7 @@ class Taxon
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Image", mappedBy="taxon", orphanRemoval=true)
+	 * @Assert\Valid()
      */
     private $images;
 
@@ -99,10 +139,14 @@ class Taxon
 	 */
 	public function InitializeSlug()
 	{
-		if ( empty($this->slug) ){
+		// if ( empty($this->slug) ){
+
+			// le slug est systèmatiquement recalculé ..
 			$slugify = new Slugify();
 			$this->slug = $slugify->slugify($this->genericName . '-' . $this->specificName);
-		}
+
+			// dd($this->genericName, $this->specificName);
+		// }
 	}
 
 	/**
@@ -210,18 +254,6 @@ class Taxon
         return $this;
     }
 
-    public function getCoverImage(): ?string
-    {
-        return $this->coverImage;
-    }
-
-    public function setCoverImage(?string $coverImage): self
-    {
-        $this->coverImage = $coverImage;
-
-        return $this;
-    }
-
     public function getToxicity(): ?int
     {
         return $this->toxicity;
@@ -278,4 +310,55 @@ class Taxon
     }
 
 
+    /**
+     * If manually uploading a file (i.e. not using Symfony Form) ensure an instance
+     * of 'UploadedFile' is injected into this setter to trigger the update. If this
+     * bundle's configuration parameter 'inject_on_load' is set to 'true' this setter
+     * must be able to accept an instance of 'File' as the bundle will inject one here
+     * during Doctrine hydration.
+     *
+     * @param File|\Symfony\Component\HttpFoundation\File\UploadedFile|null $imageFile
+     */
+    public function setCoverImageFile(?File $coverImageFile = null): void
+    {
+        $this->coverImageFile = $coverImageFile;
+
+        if (null !== $coverImageFile) {
+            // It is required that at least one field changes if you are using doctrine
+            // otherwise the event listeners won't be called and the file is lost
+            $this->updatedAt = new \DateTimeImmutable();
+		}
+
+	}
+
+    public function getCoverImageFile(): ?File
+    {
+        return $this->coverImageFile;
+	}
+	
+
+    public function setCoverImageName(?string $coverImageName): self
+    {
+		$this->coverImageName = $coverImageName;
+		
+		return $this;
+    }
+
+    public function getCoverImageName(): ?string
+    {
+        return $this->coverImageName;
+    }
+    
+    public function setCoverImageSize(?int $coverImageSize): self
+    {
+		$this->coverImageSize = $coverImageSize;
+		
+		return $this;
+    }
+
+    public function getCoverImageSize(): ?int
+    {
+        return $this->coverImageSize;
+    }
 }
+

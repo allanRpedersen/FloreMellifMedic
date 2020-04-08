@@ -1,0 +1,55 @@
+{# taxon/_collection.html.twig #}
+
+{% block _taxon_coverImageName_widget %}
+	<div class="row">
+		<div class="col-md-5">
+			{{ form_widget(form) }}
+		</div>
+		<div class="col-md-2">
+			<img id="cover-image-feedback" src="#" height="40px" alt="">
+		</div>
+		<div class="col-md-5">
+			<input type="file" id="cover-image-input" class="btn btn-outline-secondary btn-sm"></input>
+		</div>
+	</div>
+
+{% endblock %}
+
+{% block _taxon_images_widget %}
+	<h2>Ajout d'illustration</h2>
+
+	{{ form_widget( form ) }}
+	<input type="hidden" id="widgets-counter" value="0">
+
+	<div class="form-group">
+		<button type="button" id="add-image" class="btn btn-primary">Ajouter</button>
+	</div>
+{% endblock %}
+
+{% block _taxon_images_entry_row %}
+	{{ form_widget(form) }}
+{% endblock %}
+
+
+{% block _taxon_images_entry_widget %}
+	<div class="form-group" id="block_{{id}}">
+		<div class="row">
+			<div class="col-10">
+				<div class="row">
+					<div class="col">
+						{{ form_widget(form.url) }}
+						{{ form_errors(form.url) }}
+					</div>
+					<div class="col">
+						{{ form_widget(form.caption) }}
+						{{ form_errors(form.caption) }}
+					</div>
+				</div>
+			</div>
+			<div class="col-2">
+				<button type="button" data-action="delete" data-target="#block_{{id}}" class="btn btn-danger">X</button>
+			</div>
+		</div>
+	</div>
+{% endblock %}
+

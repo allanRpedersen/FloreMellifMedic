@@ -9,8 +9,25 @@
 require('../css/app.scss');
 
 // Need jQuery? Install it with "yarn add jquery", then uncomment to import it.
-const $ = require('jquery');
+var $ = require('jquery');
+// import $ from 'jquery';
+
 require('bootstrap');
 
+//
+// $(document).ready(function(){
+
+// });
 
 console.log('Hello Webpack Encore! Edit me in assets/js/app.js');
+
+
+
+// $("#add-image").click(function(){
+// 	const index = $('#taxon_images div.form-group').length;
+
+// 	const template = $('#taxon_images').data('prototype').replace(/__name__/g, index);
+
+// 	console.log(template);
+// });
+

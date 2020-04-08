@@ -1,10 +1,12 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Modification de l'entrée{% endblock %}
+{% form_theme form 'taxon/_collection.html.twig' %}
+
+{% block title %}Modification d'une entrée{% endblock %}
 
 {% block body %}
 <div class="container">
-    <h1>Modification de l'entrée</h1>
+    <h1>Modification de l'entrée : {{taxon.commonName}}</h1>
 
     {{ include('taxon/_form.html.twig', {'button_label': 'Mettre à jour'}) }}
 
@@ -13,3 +15,11 @@
     {{ include('taxon/_delete_form.html.twig') }}
 </div>
 {% endblock %}
+
+{% block javascripts %}
+
+{{ encore_entry_script_tags('taxon') }}
+
+{% endblock %}
+
+

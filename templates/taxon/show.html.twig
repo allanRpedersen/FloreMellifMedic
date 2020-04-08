@@ -12,12 +12,13 @@
 	<p>{{taxon.introduction}}</p>
 	<hr>
 	<div class="row">
-		<div class="col-md-4">
-			<img src="{{taxon.coverImage}}" alt="">
-
+		<div class="col-md-8 text-center">
+			<img src="{{ taxon.coverImageName }}" alt="" width="100%">
 		</div>
-		<div class="col">
-			<div> {{ taxon.description | raw }} </div>
+		<div class="col-md-4">
+			<div>{{ taxon.description | raw }}</div>
+			{# <p class="card-text">{{taxon.description | raw}}</p> #}
+
 		</div>
 	</div>
 

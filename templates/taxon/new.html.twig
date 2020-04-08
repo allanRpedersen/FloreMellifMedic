@@ -2,11 +2,16 @@
 
 {% block title %}Création d'une entrée{% endblock %}
 
+{# qd le theme de formulaire se trouve dans le fichier courant
+{% form_theme form _self %} #}
+{% form_theme form 'taxon/_collection.html.twig' %}
+
 {% block body %}
 	<div class="container">
 		<h1>Créer une nouvelle entrée</h1>
 
 		{{ form_start(form) }}
+
 		{{ form_widget(form) }}
 		<button class="btn btn-primary">Ajouter cette nouvelle entrée</button>
 		{{ form_end(form) }}
@@ -15,3 +20,10 @@
 
 	</div>
 {% endblock %}
+
+{% block javascripts %}
+
+{{ encore_entry_script_tags('taxon') }}
+
+{% endblock %}
+

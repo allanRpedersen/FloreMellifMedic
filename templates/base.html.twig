@@ -37,11 +37,24 @@
 				</ul>
 			</div>
 		</nav>
+		
+		<div class="container mt-1">{{ include('partials/_flash_messages.html.twig') }}</div>
 
         {% block body %}{% endblock %}
 
 		{% include 'partials/footer.html.twig' %}
 
-        {% block javascripts %}{{ encore_entry_script_tags('app') }}{% endblock %}
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+		<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.12/js/select2.min.js"></script>
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.6.0/leaflet.js"></script>
+
+		
+		{{ encore_entry_script_tags('app') }}
+	
+        {% block javascripts %}{% endblock %}
     </body>
 </html>
