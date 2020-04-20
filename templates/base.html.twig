@@ -2,16 +2,16 @@
 <html>
     <head>
         <meta charset="UTF-8">
-
+		<script src="https://kit.fontawesome.com/bcba0a714a.js" crossorigin="anonymous"></script>
 		<link rel="icon" type="image/png" href="/bee.png" />
 		<!-- <link rel="shortcut icon" type="image/x-icon" href="vignettes/bee.ico" /> -->
 
-        <title>FloreMM - {% block title %}Benvinguts{% endblock %}</title>
+        <title>FloreMM - {% block title %}Index Flore Méllifère{% endblock %}</title>
         {% block stylesheets %}{{ encore_entry_link_tags('app') }}{% endblock %}
     </head>
-    <body>
+    <body id="{% block body_id %}{% endblock %}" class="h-100">
 
-		<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+		<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
 			<a class="navbar-brand" href="{{ path('frontpage') }}">FloreMelMed</a>
 			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor02" aria-controls="navbarColor02" aria-expanded="false" aria-label="Toggle navigation">
 				<span class="navbar-toggler-icon"></span>
@@ -20,25 +20,53 @@
 			<div class="collapse navbar-collapse" id="navbarColor02">
 				<ul class="navbar-nav mr-auto">
 					<li class="nav-item">
-						<a class="nav-link" href="{{ path('frontpage') }}">Accueil<span class="sr-only">(current)</span></a>
+						<a class="nav-link" href="{{ path('taxon_index') }}">Index<span class="sr-only">(current)</span></a>
 					</li>
 					<li class="nav-item">
-						<a class="nav-link" href="{{ path('taxon_index') }}">Index</a>
+						<a class="nav-link" href="{{ path('taxon_new') }}">Nouvelle entrée</a>
 					</li>
 				</ul>
+
 				<form class="form-inline my-2 my-lg-0">
 					<input class="form-control mr-sm-2" type="text" placeholder="???">
 					<button class="btn btn-secondary my-2 my-sm-0" type="submit">recherche</button>
 				</form>
+
 				<ul class="navbar-nav ml-auto">
-					<li class="nav-item">
-						<a href="#" class="nav-link">Mon compte</a>
+
+					{% if is_granted('IS_AUTHENTICATED_FULLY') %}
+					<li class="nav-item dropdown active" {# style="float:right;"  #}>
+						<a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+							{{ app.user.email }}
+							{# <img src="{{ vich_uploader_asset(app.user, 'imageFile')}}" alt="avatar" style="width: 30px; height:auto;"> #}
+						</a>
+						<div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+							{# <a class="dropdown-item" href="{{ path('user_show', { slug: app.user.slug, id: app.user.id }) }}"><i class="fas fa-user"></i> Mes informations</a>
+							<a class="dropdown-item" href="{{ path('admin_account_dashboard') }}"><i class="fas fa-chess" aria-hidden="true"></i> Admin dashboard</a> #}
+							<a class="dropdown-item" href="{{ path('app_logout') }}"><i class="fas fa-sign-out-alt"></i> Déconnexion</a>
+						</div>
 					</li>
+
+					{% else %}
+					{# <li class="nav-item">
+						<a href="{{ path('app_register') }}" class="nav-link" role="button" aria-haspopup="true" aria-expanded="false">
+							<i class="fas fa-user-edit"></i>
+							Inscription
+						</a>
+					</li> #}
+					<li class="nav-item">
+						<a href="{{ path('app_login') }}" class="nav-link" role="button" aria-haspopup="true" aria-expanded="false">
+							<i class="fas fa-sign-in-alt"></i>
+							Connexion
+						</a>
+					</li>
+					{% endif %}
+
 				</ul>
 			</div>
 		</nav>
 		
-		<div class="container mt-1">{{ include('partials/_flash_messages.html.twig') }}</div>
+		<div class="container mt-1" style="padding-top: 55px">{{ include('partials/_flash_messages.html.twig') }}</div>
 
         {% block body %}{% endblock %}
 

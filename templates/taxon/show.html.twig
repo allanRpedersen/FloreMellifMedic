@@ -6,7 +6,16 @@
 
 {% block body %}
 <div class="container">
-	<h1>{{ taxon.commonName }}</h1>
+	<div class="row">
+		<div class="col-md-10">
+			<h1>{{ taxon.commonName }}</h1>
+		</div>
+		<div class="col-md-2">
+			<a class="btn btn-block btn-outline-info mt-2" href="{{ path('taxon_edit', {slug:taxon.slug}) }}"><i class="far fa-edit-alt"></i>Modifier l'entrée</a>
+			{# <button class="mt-3" type="button" href="{{ path('taxon_edit', {slug:taxon.slug}) }}">Modifier l'entrée</button> #}
+		</div>
+	
+	</div>
 
 	<h4><em>{{taxon.genericName}} {{taxon.specificName}}</em></h4>
 	<p>{{taxon.introduction}}</p>

@@ -45,7 +45,8 @@ class TaxonType extends AbstractType
             ->add('genericName', TextType::class, $this->mkBasics("nom générique", "genre") )
             ->add('specificName', TextType::class, $this->mkBasics("nom spécifique", "espèce") )
             ->add('family', TextType::class, $this->mkBasics("famille", "famille") )
-			->add('coverImageName', UrlType::class, $this->mkBasics("image principale", "donnez une url pour l'image", false))
+			// ->add('coverImageName', UrlType::class, $this->mkBasics("image principale", "donnez une url pour l'image", false))
+			->add('coverImageName', TextType::class, $this->mkBasics("image principale", "donnez une url pour l'image", false))
 			->add('coverImageFile', VichImageType::class, [
 				'label' => 'image principale (bis)',
 				'required' => false

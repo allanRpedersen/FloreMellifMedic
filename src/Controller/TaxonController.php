@@ -40,7 +40,7 @@ class TaxonController extends AbstractController
 
 			// not working, no toggle !!  :-#
 		$this->ascendantOrder = !($this->ascendantOrder);
-		dump($this->ascendantOrder);
+		// dump($this->ascendantOrder);
 
         return $this->render('taxon/index.html.twig', [
             'taxons' => $taxons
@@ -117,18 +117,20 @@ class TaxonController extends AbstractController
 		$form = $this->createForm( TaxonType::class, $taxon );
 
 		$form->handleRequest( $request );
-
+		
 		if ( $form->isSubmitted() && $form->isValid() ) {
-
+			
 			// CoverImage file upload (automatic, thanks to VichUploaderBundle !-)
 			// $coverImageFileInfo = $form['coverImageFile']->getData();
-
+			
 			// dump($taxon, $helper->asset($taxon));
 			$isUpload = $taxon->getCoverImageFile();
-
+			
 			// l'injection de dépendance ne fonctionne pas pour récupérer le $manager !!! ?????
 			// pb update doctrine2.0 ??
 			$manager = $this->getDoctrine()->getManager();
+			
+			// dd($_SERVER);
 			
 			//
 			// gestion des illustrations supplémentaires
@@ -139,10 +141,13 @@ class TaxonController extends AbstractController
 			
 			$manager->persist($taxon); // to move and name the uploaded file ..
 
-			if ($isUpload)
-				 // update~add the path where is stored the uploaded file
+			
+			if ($isUpload) {
+				// update~add the path where is stored the uploaded file
 				$taxon->setCoverImageName($helper->asset($taxon));
-
+				$manager->persist($taxon);
+			}
+			
 			$manager->flush();
 			
 			$this->addFlash(
@@ -208,15 +213,13 @@ class TaxonController extends AbstractController
 			$manager->flush();
 
 			if ($isUpload){
-
 				// update~add the path where is stored the uploaded file
 				$taxon->setCoverImageName($helper->asset($taxon));
-				
 				$manager->persist($taxon);
 				$manager->flush();
 			}
-	
-	
+
+		
 			$this->addFlash(
 				'success',
 				"Les modifications de l'entrée <strong>{$taxon->getCommonName()}</strong> ont bien été enregistrées !"
