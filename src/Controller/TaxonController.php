@@ -142,11 +142,11 @@ class TaxonController extends AbstractController
 			$manager->persist($taxon); // to move and name the uploaded file ..
 
 			
-			if ($isUpload) {
-				// update~add the path where is stored the uploaded file
-				$taxon->setCoverImageName($helper->asset($taxon));
-				$manager->persist($taxon);
-			}
+			// if ($isUpload) {
+			// 	// update~add the path where is stored the uploaded file
+			// 	$taxon->setCoverImageName($helper->asset($taxon));
+			// 	$manager->persist($taxon);
+			// }
 			
 			$manager->flush();
 			
@@ -166,10 +166,11 @@ class TaxonController extends AbstractController
 	}
 
 
+
 	/**
 	 * Permet l'affichage d'une fiche de l'index
 	 * 
-	 * @Route( "/{slug}", name="taxon_show" )
+	 * @Route( "/{slug}", name="taxon_show", methods={"GET","POST"} )
 	 *
 	 * @return Response
 	 */
@@ -212,12 +213,12 @@ class TaxonController extends AbstractController
 			$manager->persist($taxon);
 			$manager->flush();
 
-			if ($isUpload){
-				// update~add the path where is stored the uploaded file
-				$taxon->setCoverImageName($helper->asset($taxon));
-				$manager->persist($taxon);
-				$manager->flush();
-			}
+			// if ($isUpload){
+			// 	// update~add the path where is stored the uploaded file
+			// 	$taxon->setCoverImageName($helper->asset($taxon));
+			// 	$manager->persist($taxon);
+			// 	$manager->flush();
+			// }
 
 		
 			$this->addFlash(
@@ -236,19 +237,22 @@ class TaxonController extends AbstractController
         ]);
     }
 
+	
     /**
-     * @Route("/{slug}", name="taxon_delete", methods={"DELETE"})
+	 * @Route("/{slug}", name="taxon_delete", methods={"DELETE"})
 	 * @IsGranted("ROLE_USER")
      */
-    public function delete(Request $request, Taxon $taxon): Response
+	public function delete(Request $request, Taxon $taxon): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$taxon->getId(), $request->request->get('_token'))) {
-            $entityManager = $this->getDoctrine()->getManager();
+		
+		if ($this->isCsrfTokenValid('delete'.$taxon->getId(), $request->request->get('_token'))) {
+			$entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($taxon);
             $entityManager->flush();
         }
-
+		
         return $this->redirectToRoute('taxon_index');
     }
-
+	
 }
+

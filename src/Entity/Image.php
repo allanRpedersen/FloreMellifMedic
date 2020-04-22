@@ -46,6 +46,10 @@ class Image
 
     public function getUrl(): ?string
     {
+		// depends on where is stored the image,
+		// 		either on the web i.e. http:// or https:// 
+		//		either on localhost through VichUploaderBundle
+
         return $this->url;
     }
 
