@@ -12,10 +12,10 @@
 			<table class="table">
 				<thead>
 					<tr>
-						<th><a href="{{path('taxon_index')}}">Nom commun</a></th>
+						<th><a href="{{path('taxon_index',{sortBy: 'CommonName'})}}">Nom commun</a></th>
 						<th></th>
-						<th><a href="{{path('taxon_index_generic')}}">Genre</a></th>
-						<th><a href="#">Espèce</a></th>
+						<th><a href="{{path('taxon_index',{sortBy: 'Family'})}}">Famille</a></th>
+						<th><a href="{{path('taxon_index',{sortBy: 'GenericName'})}}">Genre</a></th>
 					</tr>
 				</thead>
 				<tbody>
@@ -27,10 +27,10 @@
 							</td>
 					
 							<td>
-								<img src="{{ taxon.coverImageName }}" alt="{{taxon.commonName}}" style="width: 70px; display: block;">
+								<img src="{{ taxon.mainImage.url }}" alt="{{taxon.commonName}}" style="width: 70px; display: block;">
 							</td>
+							<td>{{taxon.family}}</td>
 							<td>{{taxon.genericName}}</td>
-							<td>{{taxon.specificName}}</td>
 						</tr>
 					{% endfor %}
 				</tbody>

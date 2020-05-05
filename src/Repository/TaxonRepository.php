@@ -64,12 +64,12 @@ class TaxonRepository extends ServiceEntityRepository
 	 * @param string $orderBy
      * @return Taxon[] Returns an array of Taxon objects
      */
-    public function findBySpecificName($orderBy='ASC')
+    public function findByFamily($orderBy='ASC')
     {
         return $this->createQueryBuilder('t')
             //->andWhere('t.specificName = :val')
             //->setParameter('val', $value)
-            ->orderBy('t.specificName', $orderBy)
+            ->orderBy('t.family', $orderBy)
             //->setMaxResults(10)
             ->getQuery()
             ->getResult()

@@ -3,6 +3,7 @@
 namespace App\Form;
 
 use App\Entity\Taxon;
+use App\Form\ImageType;
 use Symfony\Component\Form\AbstractType;
 use FOS\CKEditorBundle\Form\Type\CKEditorType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -25,6 +26,7 @@ class TaxonType extends AbstractType
 	 *
 	 * @param string $label
 	 * @param string $placeholder
+	 * @param boolean $required
 	 * @return array
 	 */
 	private function mkBasics( $label, $placeholder, $required=true, $options=[] )
@@ -41,17 +43,12 @@ class TaxonType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-			->add('commonName', TextType::class, $this->mkBasics("nom normalisé", "nom commun") )
+			->add('commonName', TextType::class, $this->mkBasics("nom normalisé", "nom normalisé") )
             ->add('genericName', TextType::class, $this->mkBasics("nom générique", "genre") )
             ->add('specificName', TextType::class, $this->mkBasics("nom spécifique", "espèce") )
             ->add('family', TextType::class, $this->mkBasics("famille", "famille") )
-			// ->add('coverImageName', UrlType::class, $this->mkBasics("image principale", "donnez une url pour l'image", false))
-			->add('coverImageName', TextType::class, $this->mkBasics("image principale", "donnez une url pour l'image", false))
-			->add('coverImageFile', VichImageType::class, [
-				'label' => 'image principale (bis)',
-				'required' => false
-			])
-            ->add('introduction', TextType::class, $this->mkBasics("introduction", "présentation du taxon") )
+			->add('mainImage', ImageType::class, $this->mkBasics("image principale", "donnez une url pour l'image", false))
+            ->add('vernacularNames', TextType::class, $this->mkBasics("noms vernaculaires", "noms usuels ..", false))
             ->add('description', CKEditorType::class, $this->mkBasics("description", "la description compléte du taxon", false))
             // ->add('description', TextareaType::class, $this->mkBasics("description", "la description compléte du taxon"))
 			->add('flowering', TextType::class, $this->mkBasics("floraison", "jfmamjjasond", false))

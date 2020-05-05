@@ -26,9 +26,9 @@ class TaxonController extends AbstractController
 
 
     /**
-     * @Route("/", name="taxon_index", methods={"GET"})
+     * @Route("/index/{sortBy}", name="taxon_index", methods={"GET"})
      */
-    public function index(TaxonRepository $repo )
+    public function index($sortBy = 'CommonName', TaxonRepository $repo)
     {
 		// $repo = $this->getDoctrine()->getRepository(Taxon::class);
 		// le repo est obtenu par injection de dépendances !!!
@@ -36,9 +36,20 @@ class TaxonController extends AbstractController
 		// $taxons = $repo->findAll();
 
 		$orderBy = ($this->ascendantOrder ? 'ASC' : 'DESC');
-		$taxons = $repo->findByCommonName($orderBy);
 
-			// not working, no toggle !!  :-#
+		switch ($sortBy){
+			case 'CommonName':
+				$taxons = $repo->findByCommonName($orderBy);
+				break;
+			case 'Family':
+				$taxons = $repo->findByFamily($orderBy);
+				break;
+			case 'GenericName':
+				$taxons = $repo->findByGenericName($orderBy);
+
+		}
+
+		// not working, no toggle !!  :-#
 		$this->ascendantOrder = !($this->ascendantOrder);
 		// dump($this->ascendantOrder);
 
@@ -46,25 +57,7 @@ class TaxonController extends AbstractController
             'taxons' => $taxons
         ]);
 	}
-	
-    /**
-     * @Route("/generic", name="taxon_index_generic", methods={"GET"})
-     */
-    public function index_generic(TaxonRepository $repo )
-    {
-		// $repo = $this->getDoctrine()->getRepository(Taxon::class);
-		// le repo est obtenu par injection de dépendances !!!
-
-		// $taxons = $repo->findAll();
-
-		$orderBy = ($this->ascendantOrder ? 'ASC' : 'DESC');
-		$taxons = $repo->findByGenericName($orderBy);
-
-        return $this->render('taxon/index.html.twig', [
-            'taxons' => $taxons
-        ]);
-	}
-	
+		
 	/**
 	 * Modified version of `filter_var`.
 	 *
@@ -120,19 +113,10 @@ class TaxonController extends AbstractController
 		
 		if ( $form->isSubmitted() && $form->isValid() ) {
 			
-			// CoverImage file upload (automatic, thanks to VichUploaderBundle !-)
-			// $coverImageFileInfo = $form['coverImageFile']->getData();
-			
-			// dump($taxon, $helper->asset($taxon));
-			$isUpload = $taxon->getCoverImageFile();
-			
 			// l'injection de dépendance ne fonctionne pas pour récupérer le $manager !!! ?????
 			// pb update doctrine2.0 ??
 			$manager = $this->getDoctrine()->getManager();
 			
-			// dd($_SERVER);
-			
-			//
 			// gestion des illustrations supplémentaires
 			foreach($taxon->getImages() as $image){
 				$image->setTaxon($taxon);
@@ -141,15 +125,18 @@ class TaxonController extends AbstractController
 			
 			$manager->persist($taxon); // to move and name the uploaded file ..
 
-			
-			// if ($isUpload) {
-			// 	// update~add the path where is stored the uploaded file
-			// 	$taxon->setCoverImageName($helper->asset($taxon));
-			// 	$manager->persist($taxon);
-			// }
+			$mainImage = $taxon->getMainImage();
+			$httpOrigin = $_SERVER[ 'HTTP_ORIGIN' ];
+
+			if (!$mainImage->getUrl()){
+				$localFileName = $helper->asset($mainImage);
+				$mainImage->setUrl($httpOrigin . $localFileName);
+
+				$manager->persist($mainImage);
+			}
 			
 			$manager->flush();
-			
+
 			$this->addFlash(
 				'success',
 				"L'entrée <strong>{$taxon->getCommonName()}</strong> a bien été enregistrée !"
@@ -199,9 +186,10 @@ class TaxonController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
 			
 			$manager = $this->getDoctrine()->getManager();
-			
-			// dump($taxon);
-			$isUpload = $taxon->getCoverImageFile();
+					
+			$isUpload = $taxon->getMainImage()->getUploadedImageFile();
+
+			if ($isUpload) $taxon->getMainImage()->setUrl( NULL );
 			
 			//
 			// gestion des illustrations supplémentaires
@@ -211,16 +199,22 @@ class TaxonController extends AbstractController
 			}
 			
 			$manager->persist($taxon);
+
+			$mainImage = $taxon->getMainImage();
+			$httpOrigin = $_SERVER[ 'HTTP_ORIGIN' ];
+
+			//
 			$manager->flush();
 
-			// if ($isUpload){
-			// 	// update~add the path where is stored the uploaded file
-			// 	$taxon->setCoverImageName($helper->asset($taxon));
-			// 	$manager->persist($taxon);
-			// 	$manager->flush();
-			// }
+			if ($isUpload){
+				// update~add the path where is stored the uploaded file
+				$localFileName = $helper->asset($mainImage);
+				$mainImage->setUrl($httpOrigin . $localFileName);
 
-		
+				$manager->persist($mainImage);
+				$manager->flush();
+			}
+
 			$this->addFlash(
 				'success',
 				"Les modifications de l'entrée <strong>{$taxon->getCommonName()}</strong> ont bien été enregistrées !"
@@ -237,20 +231,17 @@ class TaxonController extends AbstractController
         ]);
     }
 
-	
     /**
 	 * @Route("/{slug}", name="taxon_delete", methods={"DELETE"})
 	 * @IsGranted("ROLE_USER")
      */
 	public function delete(Request $request, Taxon $taxon): Response
     {
-		
 		if ($this->isCsrfTokenValid('delete'.$taxon->getId(), $request->request->get('_token'))) {
 			$entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($taxon);
             $entityManager->flush();
         }
-		
         return $this->redirectToRoute('taxon_index');
     }
 	

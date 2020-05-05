@@ -1,4 +1,4 @@
-$('#cover-image-input').change(function(){
+$('#taxon_mainImage_uploadedImageFile_file').change(function(){
 	readURL(this);
 });
 
@@ -8,7 +8,12 @@ function readURL(input){
 		var reader = new FileReader();
 
 		reader.onload = function(e){
-			$('#cover-image-feedback').attr('src', e.target.result);
+			$('#main-image-feedback').attr('src', e.target.result);
+			//console.log(input.files[0]);
+			//$('#taxon_mainImage_uploadedImageFile_file').attr('placeholder', input.files[0].name);
+			//console.log($('.custom-file-label').text());
+			$('.custom-file-label').text(input.files[0].name);
+			//console.log(e);
 		}
 
 		reader.readAsDataURL(input.files[0]); // convert to base64 string

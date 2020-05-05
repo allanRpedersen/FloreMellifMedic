@@ -15,49 +15,59 @@ class AppFixtures extends Fixture
 		$faker = Factory::create('fr-FR');
 		
 		
-		for ( $i=1; $i<=11; $i++){}
+		// for ( $i=1; $i<=11; $i++){}
 
 			$taxon = new Taxon();
 
-			$gName = 'Aconit napel';
-			$sName = 'aconitum';
-			$cName = 'napellus';
+			$gName = 'aconitum';
+			$sName = 'napellus';
+			$cName = 'Aconit napel';
 			$family = 'Ranunculaceae';
 
-			$coverImage = 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Aconitum_napellus_-_K%C3%B6hler%E2%80%93s_Medizinal-Pflanzen-151.jpg/290px-Aconitum_napellus_-_K%C3%B6hler%E2%80%93s_Medizinal-Pflanzen-151.jpg';
-			
-			//$coverImage = \str_replace( 'https://', 'http://', $coverImage);
+			$mainImage = new Image();
+			$mainImage->setUrl('https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Aconitum_napellus_-_K%C3%B6hler%E2%80%93s_Medizinal-Pflanzen-151.jpg/290px-Aconitum_napellus_-_K%C3%B6hler%E2%80%93s_Medizinal-Pflanzen-151.jpg')
+					->setCaption($cName)
+					->setTaxon($taxon)
+					;
 
-			$intro 		= 'Casque de Jupiter, ';
-			$desc 		= '<p>' . join('<p></p>', $faker->paragraphs(5)) . '</p>';
+					
+					
+			$manager->persist($mainImage);
+					
+			
+			$verna 		= 'Casque de Jupiter, Char de Venus';
+			$desc 		= '<p>' . join('<p></p>', $faker->paragraphs(3)) . '</p>';
 			$used 		= $faker->word;
-
+			
 			$taxon->setGenericName($gName)
-					->setSpecificName($sName)
-					->setCommonName($cName)
-					->setCoverImage($coverImage)
-					->setDescription($desc)
-					->setIntroduction($intro)
-					->setToxicity(\mt_rand(0,4))
-					->setUsedTo($used)
-					->setFlowering("jfMAMJJASOnd")
-					->setFamily($family);
+			->setSpecificName($sName)
+			->setCommonName($cName)
+			->setMainImage($mainImage)
+			->setDescription($desc)
+			->setVernacularNames($verna)
+			->setToxicity(7)  //    \mt_rand(0,4)
+			->setUsedTo($used)
+			->setFlowering("jfMAMJJASOnd")
+			->setFamily($family);
 			
-
+			
 			for ($j=1; $j<=\mt_rand(2, 5); $j++){}
-
-				$image = new Image();
-
-				// $coverImage = 'https://upload.wikimedia.org/wikipedia/commons/b/ba/Aconitum_napellus00.jpg';
-				$imageUrl = \str_replace( 'https://', 'http://', $faker->imageUrl());
-				$image->setUrl('https://upload.wikimedia.org/wikipedia/commons/b/ba/Aconitum_napellus00.jpg')
-						->setCaption( $faker->sentence())
-						->setTaxon($taxon);
-
-				$manager->persist($image);
 			
+			$image = new Image();
 			
-		$manager->persist($taxon);
-		$manager->flush();
-    }
-}
+			// $coverImage = 'https://upload.wikimedia.org/wikipedia/commons/b/ba/Aconitum_napellus00.jpg';
+			$imageUrl = \str_replace( 'https://', 'http://', $faker->imageUrl());
+			
+			$image->setUrl('https://upload.wikimedia.org/wikipedia/commons/b/ba/Aconitum_napellus00.jpg')
+			->setCaption('Zeus helmet :-))')
+			->setTaxon($taxon);
+			
+			$manager->persist($image);
+			
+			$manager->persist($taxon);
+			
+			$manager->flush();
+			//dd($taxon, $mainImage);
+		}
+	}
+	

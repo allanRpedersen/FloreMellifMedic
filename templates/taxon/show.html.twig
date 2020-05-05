@@ -18,11 +18,11 @@
 	</div>
 
 	<h4><em>{{taxon.genericName}} {{taxon.specificName}}</em></h4>
-	<p>{{taxon.introduction}}</p>
+	<p>{{taxon.vernacularNames}}</p>
 	<hr>
 	<div class="row">
 		<div class="col-md-6 text-center">
-			<img src="{{ taxon.coverImageName }}" alt="" width="100%">
+			<img src="{{ taxon.mainImage.url }}" alt="" width="100%">
 		</div>
 		<div class="col-md-6">
 			<div>{{ taxon.description | raw }}</div>
@@ -41,11 +41,11 @@
 		<div class="carousel-inner">
 			{% for image in taxon.images %}
 				<div class="carousel-item {% if loop.first %}active{% endif %}">
-				<img src="{{ image.url }}" class="d-block w-100" alt="...">
-				<div class="carousel-caption d-none d-md-block">
-					<h5>{{ taxon.commonName }}</h5>
-					<p>{{ image.caption }}</p>
-				</div>
+					<img src="{{ image.url }}" class="d-block w-100" alt="...">
+					<div class="carousel-caption d-none d-md-block">
+						<h5>{{ taxon.commonName }}</h5>
+						<p>{{ image.caption }}</p>
+					</div>
 				</div>
 			{% endfor %}
 		</div>

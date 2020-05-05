@@ -1,19 +1,25 @@
 {# taxon/_collection.html.twig #}
 
-{% block _taxon_coverImageName_widget %}
-	<div class="row">
-		<div class="col-md-5">
-			{{ form_widget(form) }}
+{% block _taxon_mainImage_widget %}
+	<div class="form-group">
+		<div class="row">
+			<div class="col-md-5">
+				{{ form_widget(form.url) }}
+			</div>
+			<div class="col-md-5">
+				{{ form_widget(form.uploadedImageFile)}}
+			</div>
+			<div class="col-md-2">
+					<img id="main-image-feedback" width="80 px" src="#" alt="">
+			</div>
 		</div>
-		<div class="col-md-2">
-			<img id="cover-image-feedback" src="#" height="40px" alt="">
-		</div>
-		<div class="col-md-5">
-			<input type="file" id="cover-image-input" class="btn btn-outline-secondary btn-sm"></input>
+		<div class="row col-md-12 mt-2">
+			{{ form_widget(form.caption) }}
 		</div>
 	</div>
 
 {% endblock %}
+
 
 {% block _taxon_images_widget %}
 	<h2>Ajout d'illustration</h2>
