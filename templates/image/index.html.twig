@@ -9,7 +9,9 @@
         <thead>
             <tr>
                 <th>Id</th>
+				<th>Taxon Id</th>
                 <th>Url</th>
+				<th>UploadedImageName</th>
                 <th>Caption</th>
                 <th>actions</th>
             </tr>
@@ -18,7 +20,13 @@
         {% for image in images %}
             <tr>
                 <td>{{ image.id }}</td>
+				{% if image.taxon %}
+					<td>{{ image.taxon.id }}</td>
+				{% else %}
+					<td>NULL</td>
+				{% endif %}
                 <td>{{ image.url }}</td>
+				<td>{{ image.uploadedImageName }}</td>
                 <td>{{ image.caption }}</td>
                 <td>
                     <a href="{{ path('image_show', {'id': image.id}) }}">show</a>

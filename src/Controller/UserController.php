@@ -4,14 +4,20 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Form\UserType;
+use App\Entity\PasswordUpdate;
+use App\Form\PasswordUpdateType;
 use App\Repository\UserRepository;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 
 /**
  * @Route("/user")
+ * @isGranted("ROLE_USER")
  */
 class UserController extends AbstractController
 {
@@ -90,5 +96,70 @@ class UserController extends AbstractController
         }
 
         return $this->redirectToRoute('user_index');
-    }
+	}
+	
+	/**
+	 * Mise à jour du mot de passe
+	 * 
+	 * @Route ("/user/updatepwd", name="user_updatepwd")
+	 * @isGranted("ROLE_USER")
+	 * 
+	 * @return Response
+	 */
+	public function update_password(Request $request, UserPasswordEncoderInterface $encoder){
+
+		$passwordUpdate = new PasswordUpdate();
+		$user = $this->getUser();
+
+		
+		$form = $this->createForm(PasswordUpdateType::class, $passwordUpdate );
+		
+		$form->handleRequest($request);
+		
+		if ($form->isSubmitted() && $form->isValid()){
+
+			// 1- vérif de l'ancien mot de passe
+
+			$isPwdValid = $encoder->isPasswordValid($user, $passwordUpdate->getOldPassword());
+
+			if ( ! $isPwdValid ){
+			
+				// if (!password_verify($passwordUpdate->getOldPassword(), $user->getPassword())){
+				// return $this->passwordEncoder->isPasswordValid($user, $credentials['password']);
+
+				// gérer l'erreur
+				$form->get('oldPassword')->addError(new FormError("Vous n'avez pas saisi correctement votre mot de passe actuel !"));
+
+			}
+			else {
+				$newPassword = $passwordUpdate->getNewPassword();
+
+				$hash = $encoder->encodePassword($user, $newPassword);
+				$user->setPassword($hash);
+
+				$entityManager = $this->getDoctrine()->getManager();
+				$entityManager->persist($user);
+				$entityManager->flush();
+	
+				$this->addFlash(
+					"success",
+					"Votre mot de passe a bien été modifié"
+				);
+
+				return $this->redirectToRoute('taxon_index', [
+					// 'slug' => $user->getSlug(),
+					// 'id' => $user->getId()
+					]);
+					
+				dd($user);
+			}
+
+		}
+
+		return $this->render('user/updatepwd.html.twig', [
+			'form' => $form->createView()
+		]);
+	}
+
+
 }

@@ -6,7 +6,7 @@ use App\Entity\Image;
 use Cocur\Slugify\Slugify;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\Collection;
-use Symfony\Component\HttpFoundation\File\File;
+// use Symfony\Component\HttpFoundation\File\File;
 use Doctrine\Common\Collections\ArrayCollection;
 // use Vich\UploaderBundle\Mapping\Annotation as Vich;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -59,7 +59,7 @@ class Taxon
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $usedTo;
+	private $usedTo;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
@@ -67,39 +67,53 @@ class Taxon
     private $vernacularNames;
 
     /**
-     * @ORM\Column(type="text", nullable=true)
-     */
-    private $description;
-
-
-    /**
-     * @ORM\Column(type="integer", nullable=true)
-     */
-    private $toxicity;
-
-    /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Image", mappedBy="taxon", orphanRemoval=true)
-	 * @Assert\Valid()
-     */
-    private $images;
-
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $slug;
+	 * @ORM\Column(type="text", nullable=true)
+     */ 
+	private $description;
+	
+	/**
+	 * @ORM\Column(type="string", length=255, nullable=true)
+	 */
+	private $croppedPart;
+	
+	/**
+	 * @ORM\OneToMany(targetEntity="App\Entity\Reference", mappedBy="taxon", orphanRemoval=true)
+	 */
+	private $reference;
+	
+	/**
+	 * Toxicity from 0 non toxic to 7 lethal
+	 * 
+	 * @ORM\Column(type="integer", nullable=true)
+	 */ 
+	private $toxicity;
 
     /**
      * @ORM\OneToOne(targetEntity="App\Entity\Image", cascade={"persist", "remove"})
      * @ORM\JoinColumn(nullable=false)
-     */
+     */ 
     private $mainImage;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Image", mappedBy="taxon", orphanRemoval=true)
+	 * @Assert\Valid()
+     */ 
+	private $images;
+
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */ 
+    private $slug;
+
+	
 	/**
 	 * 
 	 */
     public function __construct()
     {
         $this->images = new ArrayCollection();
+        $this->reference = new ArrayCollection();
     }
 
 	/**
@@ -111,24 +125,26 @@ class Taxon
 	 * @return void
 	 */
 	public function InitializeSlug()
-   	{
-   		// if ( empty($this->slug) ){
-			   
-   			// le slug est systèmatiquement recalculé ..
-   			$slugify = new Slugify();
-			$this->slug = $slugify->slugify($this->genericName . '-' . $this->specificName);
-
-			// }
-   	}
+                           	{
+                           		// if ( empty($this->slug) ){
+                        			   
+                           			// le slug est systèmatiquement recalculé ..
+                           			$slugify = new Slugify();
+                        			$this->slug = $slugify->slugify($this->genericName . '-' . $this->specificName);
+                        
+                        			// }
+                           	}
 
 	/**
-	 * GETTER / SETTER
+	 * 
+	 * G E T T E R s   /   S E T T E R s
 	 *
 	 */
+	
 	public function getId()
-   	{
-   		return $this->id;
-   	}
+	{
+		return $this->id;
+	}
 	
     public function getGenericName(): ?string
     {
@@ -282,16 +298,59 @@ class Taxon
     }
 
 	public function getMainImage(): ?Image
-   	{
-   		return $this->mainImage;
-   	}
+                           	{
+                           		return $this->mainImage;
+                           	}
 
 	public function setMainImage(Image $image): self
-   	{
-   		$this->mainImage = $image;
-   
-   		return $this;
-   	}
+                           	{
+                           		$this->mainImage = $image;
+                           
+                           		return $this;
+                           	}
+
+    /**
+     * @return Collection|Reference[]
+     */
+    public function getReference(): Collection
+    {
+        return $this->reference;
+    }
+
+    public function addReference(Reference $reference): self
+    {
+        if (!$this->reference->contains($reference)) {
+            $this->reference[] = $reference;
+            $reference->setTaxon($this);
+        }
+
+        return $this;
+    }
+
+    public function removeReference(Reference $reference): self
+    {
+        if ($this->reference->contains($reference)) {
+            $this->reference->removeElement($reference);
+            // set the owning side to null (unless already changed)
+            if ($reference->getTaxon() === $this) {
+                $reference->setTaxon(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getCroppedPart(): ?string
+    {
+        return $this->croppedPart;
+    }
+
+    public function setCroppedPart(string $croppedPart): self
+    {
+        $this->croppedPart = $croppedPart;
+
+        return $this;
+    }
 
 
 }
