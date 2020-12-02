@@ -125,15 +125,15 @@ class Taxon
 	 * @return void
 	 */
 	public function InitializeSlug()
-                           	{
-                           		// if ( empty($this->slug) ){
-                        			   
-                           			// le slug est systèmatiquement recalculé ..
-                           			$slugify = new Slugify();
-                        			$this->slug = $slugify->slugify($this->genericName . '-' . $this->specificName);
-                        
-                        			// }
-                           	}
+    {
+        // if ( empty($this->slug) ){
+                
+            // le slug est systèmatiquement recalculé ..
+            $slugify = new Slugify();
+            $this->slug = $slugify->slugify($this->genericName . '-' . $this->specificName);
+
+            // }
+    }
 
 	/**
 	 * 
@@ -298,16 +298,16 @@ class Taxon
     }
 
 	public function getMainImage(): ?Image
-                           	{
-                           		return $this->mainImage;
-                           	}
+    {
+        return $this->mainImage;
+    }
 
 	public function setMainImage(Image $image): self
-                           	{
-                           		$this->mainImage = $image;
-                           
-                           		return $this;
-                           	}
+    {
+        $this->mainImage = $image;
+    
+        return $this;
+    }
 
     /**
      * @return Collection|Reference[]
@@ -351,7 +351,6 @@ class Taxon
 
         return $this;
     }
-
 
 }
 

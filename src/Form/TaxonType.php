@@ -22,7 +22,7 @@ class TaxonType extends AbstractType
 {
 
 	/**
-	 * Crée un configuration de base pour les champs du formulaire
+	 * Crée une configuration de base pour les champs du formulaire
 	 *
 	 * @param string $label
 	 * @param string $placeholder
@@ -50,11 +50,10 @@ class TaxonType extends AbstractType
 			->add('mainImage', ImageType::class, $this->mkBasics("image principale", "donnez une url pour l'image", false))
             ->add('vernacularNames', TextType::class, $this->mkBasics("noms vernaculaires", "noms usuels ..", false))
             ->add('description', CKEditorType::class, $this->mkBasics("description", "la description compléte du taxon", false))
-            // ->add('description', TextareaType::class, $this->mkBasics("description", "la description compléte du taxon"))
 			->add('flowering', TextType::class, $this->mkBasics("floraison", "jfmamjjasond", false))
             ->add('usedTo', TextType::class, $this->mkBasics("utilisation", "utilisation", false))
 			->add('toxicity', IntegerType::class, $this->mkBasics("toxicité", "0:pas .. 7:mortelle", false) )
-			->add( 'images', CollectionType::class, $this->mkBasics("images suppl.", "bzzz", false, [
+			->add( 'images', CollectionType::class, $this->mkBasics("images supplémentaires", "bzzz", false, [
 				'entry_type' => ImageType::class,
 				'allow_add' => true,
 				'allow_delete' => true
